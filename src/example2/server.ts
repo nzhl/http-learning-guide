@@ -1,51 +1,50 @@
-import { Server } from 'net';
 import debug from 'debug';
-import { RESPONSE } from './http';
+import { createReadStream } from "fs";
+import { createServer } from "http";
 
 const d = debug('ex2/server');
 
 export const startServer = (port: number, host: string, cb: () => void) => {
-  const server = new Server();
+  const server = createServer((req, res) => {
+    d(`=> ${req.url}`)
+    const path = req.url || '';
+    if (path.startsWith('/api')) {
+      if (path.includes('no-store')) {
+        res.setHeader('Cache-Control', 'no-store')
 
-  server.on('connection', (reqSocket) => {
-    d('~~ request coming ~~');
-    let tmp = Buffer.alloc(0);
-
-    reqSocket.on('data', (chunk) => {
-      tmp = Buffer.concat([tmp, chunk]);
-      const tmpStr = tmp.toString();
-
-      // check end of http
-      // https://httpwg.org/specs/rfc7230.html#rfc.section.3.3.3
-      if (tmp.includes('Content-Length')) {
-        // todo
-      } else if (tmp.includes('Transfer-Encoding')) {
-        // todo
-      } else if (tmpStr.endsWith('\r\n\r\n')) {
-        // https://github.com/jinhailang/blog/issues/34
-        // body empty
-        d(tmp.toString());
-        reqSocket.end(RESPONSE);
       }
-    });
+      if (path.includes('no-cache')) {
+        res.setHeader('Cache-Control', 'no-cache')
 
-    // no more content to read
-    reqSocket.on('end', () => {
-      d('request read end');
-    });
+      }
+      if (path.includes('max-age')) {
+        if (path.includes('b5')) {
+          res.setHeader('Vary', 'x-date')
+        } else {
+          res.setHeader('Vary', 'Cache-Control')
+        }
+        res.setHeader('Cache-Control', 'max-age=10')
 
-    // no more content to write
-    reqSocket.on('finish', () => {
-      d('response write finish');
-    });
+      }
 
-    reqSocket.on('close', () => {
-      d('socket close');
-    });
-  });
+      if (req.headers['If-None-Match'.toLowerCase()] && !path.includes('b3')) {
+        res.statusCode = 304
+      }
 
-  server.listen(port, host, () => {
-    d(`server listening ${host}:${port}`);
-    cb();
-  });
+
+      res.setHeader('Etag', '1234')
+      const body = Date.now() + ''
+      d(body)
+      res.end(body)
+
+    } else if (path === '/') {
+      const htmlStream = createReadStream('./dist/index.html')
+      htmlStream.pipe(res)
+    } else {
+      res.statusCode = 404
+      res.end()
+    }
+  })
+
+  server.listen(port, host, cb)
 };

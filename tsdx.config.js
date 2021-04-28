@@ -1,4 +1,6 @@
 const replace = require('@rollup/plugin-replace');
+const copy = require('rollup-plugin-copy');
+
 
 module.exports = {
   rollup(config, opts) {
@@ -21,6 +23,16 @@ module.exports = {
             preventAssignment: true,
           })
         : p
+    );
+    config.plugins.push(
+      copy({
+        targets: [
+          {
+            src: 'src/**/*.html',
+            dest: 'dist',
+          },
+        ],
+      })
     );
     return config;
   },
