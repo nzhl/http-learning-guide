@@ -11,14 +11,7 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "node .",
-    "dev": "DEBUG=dev:* tsdx watch --onSuccess \"node .\"",
-    "build": "tsdx build",
-    "test": "tsdx test",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "size": "size-limit",
-    "analyze": "size-limit --why"
+    "dev": "./runx.sh"
   },
   "husky": {
     "hooks": {
@@ -31,7 +24,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "bisocks",
+  "name": "http-learning-guide",
   "author": "帅的被人砍",
   "module": "dist/bisocks.esm.js",
   "size-limit": [

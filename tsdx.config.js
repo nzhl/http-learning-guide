@@ -1,11 +1,20 @@
 const replace = require('@rollup/plugin-replace');
 
 module.exports = {
-
-  // https://github.com/formium/tsdx/issues/981
-  // fix preventAssignment warning from @rollup/plugin-replace
   rollup(config, opts) {
-    config.plugins = config.plugins.map(p =>
+    if (opts.format === 'esm') {
+      config = { ...config, preserveModules: true };
+      config.output = {
+        ...config.output,
+        dir: 'dist/',
+        entryFileNames: '[name].mjs',
+      };
+      delete config.output.file;
+    }
+
+    // https://github.com/formium/tsdx/issues/981
+    // fix preventAssignment warning from @rollup/plugin-replace
+    config.plugins = config.plugins.map((p) =>
       p.name === 'replace'
         ? replace({
             'process.env.NODE_ENV': JSON.stringify(opts.env),
