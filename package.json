@@ -1,14 +1,14 @@
 {
+  "name": "http-learning-guide",
+  "author": "帅的被人砍",
   "version": "0.1.0",
   "license": "MIT",
-  "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "scripts": {
     "dev": "./runx.sh"
@@ -24,9 +24,6 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "http-learning-guide",
-  "author": "帅的被人砍",
-  "module": "dist/bisocks.esm.js",
   "size-limit": [
     {
       "path": "dist/bisocks.cjs.production.min.js",

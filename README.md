@@ -1,7 +1,7 @@
 # Http Learning Guide
 
-## 跑起来
+## Get Started
 
 ```
-yarn dev [exercise-num]
+yarn dev [example-number] # e.g. `yarn dev 2` 表示执行示例代码2
 ```
