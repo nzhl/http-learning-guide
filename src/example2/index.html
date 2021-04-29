@@ -1,71 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>X</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>X</title>
+  </head>
+  <body>
     <button id="b1">getTime (no-store)</button>
-    <div style="border: 1px solid red;margin: 12px 0 24px 0;">
+    <div style="border: 1px solid red; margin: 12px 0 24px 0">
       <div id="d1"></div>
     </div>
 
     <button id="b2">getTime (no-cache)</button>
-    <div style="border: 1px solid red;margin: 12px 0 24px 0;">
+    <div style="border: 1px solid red; margin: 12px 0 24px 0">
       <div id="d2"></div>
     </div>
 
     <button id="b3">getTime (max-age=5; Etag=invalid)</button>
-    <div style="border: 1px solid red;margin: 12px 0 24px 0;">
+    <div style="border: 1px solid red; margin: 12px 0 24px 0">
       <div id="d3"></div>
     </div>
 
     <button id="b4">getTime (max-age=5; Etag=1234)</button>
-    <div style="border: 1px solid red;margin: 12px 0 24px 0;">
+    <div style="border: 1px solid red; margin: 12px 0 24px 0">
       <div id="d4"></div>
     </div>
 
     <button id="b5">getTime (max-age=5; Etag=1234; Vary)</button>
-    <div style="border: 1px solid red;margin: 12px 0 24px 0;">
+    <div style="border: 1px solid red; margin: 12px 0 24px 0">
       <div id="d5"></div>
     </div>
-</body>
+  </body>
 
-<script>
-  const bind = (btnId, divId, headers) => {
-    const btn$ = document.getElementById(btnId)
-    const div$ = document.getElementById(divId)
-    btn$.onclick = async () => {
-      const res = await fetch(`/api/${headers['Cache-Control']}/${btnId}`, {
-        headers: {
-          ...headers,
-          // 思考下原样传送 no cache 会发送什么
-          'Cache-Control': headers['Cache-Control'] === 'no-cache' 
-            ? '' 
-            : headers['Cache-Control'],
-          'x-date': Date.now(),
-        },
-      })
-      div$.innerHTML = await res.text()
-    }
-  }
-  bind('b1', 'd1', {
-    'Cache-Control': 'no-store',
-  })
+  <script>
+    const bind = (btnId, divId, headers) => {
+      const btn$ = document.getElementById(btnId);
+      const div$ = document.getElementById(divId);
+      btn$.onclick = async () => {
+        const res = await fetch(`/api/${headers['Cache-Control']}/${btnId}`, {
+          headers: {
+            ...headers,
+            // 思考下原样传送 no cache 会发生什么
+            'Cache-Control':
+              headers['Cache-Control'] === 'no-cache'
+                ? ''
+                : headers['Cache-Control'],
+            'x-date': Date.now(),
+          },
+        });
+        div$.innerHTML = await res.text();
+      };
+    };
+    bind('b1', 'd1', {
+      'Cache-Control': 'no-store',
+    });
 
-  bind('b2', 'd2', {
-    'Cache-Control': 'no-cache',
-  })
+    bind('b2', 'd2', {
+      'Cache-Control': 'no-cache',
+    });
 
-  bind('b3', 'd3', {
-    'Cache-Control': 'max-age=5',
-  })
-  bind('b4', 'd4', {
-    'Cache-Control': 'max-age=5'
-  })
-  bind('b5', 'd5', {
-    'Cache-Control': 'max-age=5',
-  })
-</script>
-
+    bind('b3', 'd3', {
+      'Cache-Control': 'max-age=5',
+    });
+    bind('b4', 'd4', {
+      'Cache-Control': 'max-age=5',
+    });
+    bind('b5', 'd5', {
+      'Cache-Control': 'max-age=5',
+    });
+  </script>
 </html>

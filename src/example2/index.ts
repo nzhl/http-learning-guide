@@ -7,5 +7,5 @@ const host = '0.0.0.0';
 const port = parseInt(process.env.PORT || '10086', 10);
 
 startServer(port, host, () => {
-  d(`server listen at http://localhost:${port}`);
+  d(`try http://localhost:${port} in your browser`);
 });
