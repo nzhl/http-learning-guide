@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>X</title>
+  </head>
+  <body>
+    <button id="b1">cross origin get</button>
+  </body>
+
+  <script>
+
+    const b1 = document.getElementById('b1')
+    b1.onclick = async () => {
+      const res = await fetch('https://github.com');
+    }
+
+  </script>
+</html>
