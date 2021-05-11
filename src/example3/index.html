@@ -6,31 +6,53 @@
   </head>
   <body>
     <button id="b1">raw cross origin get</button>
-    <button id="b2">cross origin by window.name </button>
-    <button id="b3">cross origin by hash change</button>
 
-    <iframe id="f1" style="width:100%; height: 100px;" src="http://www.foo.com/404"></iframe>
+    <div>-----------</div>
+
+    <iframe
+      id="f1"
+      style="width: 100%; height: 100px"
+      src="http://www.foo.com/404"
+    ></iframe>
+    <button id="b2">cross origin by window.name</button>
+
+    <div>-----------</div>
+    <iframe
+      id="f2"
+      style="width: 100%; height: 100px"
+      src="http://www.bar.com/iframe-hash"
+    ></iframe>
+    <button id="b3">cross origin by hash change</button>
   </body>
 
   <script>
-    const b1 = document.getElementById('b1')
+    const b1 = document.getElementById('b1');
     b1.onclick = async () => {
       const res = await fetch('http://www.bar.com/api/info');
-    }
+    };
 
-    const b2 = document.getElementById('b2')
+    const b2 = document.getElementById('b2');
     b2.onclick = () => {
       const f1 = document.getElementById('f1');
       f1.src = 'http://www.bar.com/iframe-name';
       f1.onload = () => {
-        console.log('aaa', f1.src)
         if (f1.src === 'http://www.bar.com/iframe-name') {
-          f1.src = 'http://www.foo.com/404'
+          // 信息在页面里, 页面加载完成表示信息已经在 window.name 中了
+          f1.src = 'http://www.foo.com/404';
         } else {
-          console.log(f1.contentWindow.name)
+          console.log(f1.contentWindow.name);
         }
-      }
-    }
+      };
+    };
 
+    const b3 = document.getElementById('b3');
+    const f2 = document.getElementById('f2');
+
+    b3.onclick = () => {
+      window.onhashchange = () => {
+        console.log(location.hash);
+      };
+      f2.src = f2.src.split('#')[0] + '#/api/info';
+    };
   </script>
 </html>

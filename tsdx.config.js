@@ -1,6 +1,8 @@
 const replace = require('@rollup/plugin-replace');
 const copy = require('rollup-plugin-copy');
 
+const idx = process.env.IDX;
+
 module.exports = {
   rollup(config, opts) {
     config.output = {
@@ -25,7 +27,7 @@ module.exports = {
       copy({
         targets: [
           {
-            src: 'src/**/*.html',
+            src: `src/example${idx}/*.html`,
             dest: 'dist',
           },
         ],

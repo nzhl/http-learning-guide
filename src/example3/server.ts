@@ -18,8 +18,11 @@ export const startServer = (port: number, host: string, cb: () => void) => {
         res.end(JSON.stringify({ name: 'Fred', age: 25 }));
       })
       .with({ url: '/iframe-name' }, () => {
-        // res.setHeader('X-Frame-Options', 'allow-from https://www.foo.com/')
         const htmlStream = createReadStream('./dist/iframe-name.html');
+        htmlStream.pipe(res);
+      })
+      .with({ url: '/iframe-hash' }, () => {
+        const htmlStream = createReadStream('./dist/iframe-hash.html');
         htmlStream.pipe(res);
       })
       .with(__, () => {
