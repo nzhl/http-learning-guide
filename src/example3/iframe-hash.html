@@ -5,16 +5,24 @@
     <title>X</title>
   </head>
   <body>
-    <h1>CORS by iframe + hash</h1>
+    <h1>www.bar.com/iframe-hash</h1>
+    <iframe
+      style="width: 100%; height: 200px"
+      id="f1"
+      src="http://www.foo.com/iframe-hash2"
+    ></iframe>
   </body>
   <script>
+    const f1 = document.getElementById('f1');
     window.onhashchange = () => {
       console.log('info', location.hash);
       if (location.hash === '#/api/info') {
-        location.hash = JSON.stringify({
-          age: 24,
-          name: 'Fred',
-        });
+        f1.src =
+          f1.src.split('#')[0] +
+          `#${(location.hash = JSON.stringify({
+            age: 24,
+            name: 'Fred',
+          }))}`;
       }
     };
   </script>
