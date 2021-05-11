@@ -39,6 +39,9 @@
         if (f1.src === 'http://www.bar.com/iframe-name') {
           // 信息在页面里, 页面加载完成表示信息已经在 window.name 中了
           f1.src = 'http://www.foo.com/404';
+
+          // 此时访问仍然是跨域错误, 必须再次onload之后才能获取
+          // console.log(f1.contentWindow.name);
         } else {
           console.log(f1.contentWindow.name);
         }
