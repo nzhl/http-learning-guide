@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>X</title>
+  </head>
+  <body>
+    <h1>www.bar.com/iframe-postmessage</h1>
+  </body>
+  <script>
+    window.onmessage = (ev) => {
+      console.log(`received req ${ev.data}`);
+      ev.source.postMessage(
+        {
+          name: 'Fred',
+          age: 24,
+        },
+        ev.origin
+      );
+    };
+  </script>
+</html>

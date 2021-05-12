@@ -5,10 +5,10 @@
     <title>X</title>
   </head>
   <body>
+    <h1>--- 1. req without considering cors ----</h1>
     <button id="b1">raw cross origin get</button>
 
-    <div>-----------</div>
-
+    <h1>---- 2. by window.name ------</h1>
     <iframe
       id="f1"
       style="width: 100%; height: 100px"
@@ -16,13 +16,23 @@
     ></iframe>
     <button id="b2">cross origin by window.name</button>
 
-    <div>-----------</div>
+    <h1>---- 3. by hashchange ---------</h1>
     <iframe
       id="f2"
       style="width: 100%; height: 300px"
       src="http://www.bar.com/iframe-hash"
     ></iframe>
     <button id="b3">cross origin by hash change</button>
+
+    <h1>---- 4. by postMessage -----------</h1>
+
+    <iframe
+      id="f3"
+      style="width: 100%; height: 300px"
+      src="http://www.bar.com/iframe-postmessage"
+    >
+    </iframe>
+    <button id="b4">cross origin by post message</button>
   </body>
 
   <script>
@@ -56,6 +66,16 @@
         console.log(payload);
       };
       f2.src = f2.src.split('#')[0] + '#/api/info';
+    };
+
+    const b4 = document.getElementById('b4');
+    const f3 = document.getElementById('f3');
+
+    b4.onclick = () => {
+      f3.contentWindow.postMessage('/api/info', 'http://www.bar.com');
+      window.onmessage = (ev) => {
+        console.log(`res received ${JSON.stringify(ev.data)}`);
+      };
     };
   </script>
 </html>
